@@ -43,7 +43,7 @@ function caseSensiveFileExits(filepath) {
 function addSameNameRequire(fis, file, realpathNoExt, filename, ext) {
     var path, map;
 
-    // console.log('>>>> addSameNameRequire:', file.dirname, file.realpath, realpathNoExt, ext);
+    console.log('>>>> addSameNameRequire:', file.dirname, file.realpath, realpathNoExt, ext, fis.util.isFile(realpathNoExt + ext), caseSensiveFileExits(realpathNoExt + ext));
     if (fis.util.isFile(realpathNoExt + ext) && caseSensiveFileExits(realpathNoExt + ext)) {
         path = './' + filename + ext;
     } else if ((map = fis.media().get('project.ext'))) {
@@ -59,8 +59,10 @@ function addSameNameRequire(fis, file, realpathNoExt, filename, ext) {
         }
     }
 
+    console.log('>>>> addSameNameRequire path:', path);
     if (path) {
         var info = fis.uri.getId(path, file.dirname);
+        console.log('>>>>> addSameNameRequire info:', info.file.useMap, !~file.asyncs.indexOf(info.id));
         if (info.file && info.file.useMap && !~file.asyncs.indexOf(info.id)) {
             file.addLink(info.file.subpath);
             file.addRequire(info.id);
